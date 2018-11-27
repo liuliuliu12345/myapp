@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>这是登录页</title>
+    <link rel="stylesheet" href="/bli/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/reset.css">
+    <link rel="stylesheet" href="/css/dengLu.css">
+</head>
+
+<body>
+</body>
+<div class="dengLuBox">
+    <div class="boxInput">
+        <h2>风坳电站管理系统</h2>
+        <h2>登录</h2>
+        <div class="formBox">
+            <!-- post直接发送到 users 的后台做登录验证，成功后直接登录首页 -->
+            <form action="/users/dengLu" method="POST" class="form">
+                <label>
+                    <span>用户名：</span>
+                    <input type="text" placeholder="请输入用户名" class="inputName" name="useName">
+                </label>
+                <label>
+                    <span>密码：</span>
+                    <input type="password" placeholder="请输入密码" class="inputName" name="pwdName">
+                </label>
+                <div class="submitBox">
+                    <input type="submit" value="登录" class="submit">
+                    <a href="zhuCe.html">没有账号？</a>
+                </div>
+            </form>
+
+
+        </div>
+    </div>
+</div>
+
+
+
+</html>

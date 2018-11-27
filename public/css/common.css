@@ -1,0 +1,64 @@
+@charset "UTF-8";
+/* 整个项目都会用到的css */
+body,
+html {
+  height: 100%;
+  background: #ccc;
+}
+
+.container {
+  display: flex;
+  height: 100%;
+  width: 100%;
+  flex-direction: column;
+}
+.container .lyj-head {
+  display: flex;
+  height: 80px;
+  border-bottom: 1px solid #000;
+  justify-content: space-between;
+  align-items: center;
+}
+.container .lyj-head .logo {
+  font-size: 26px;
+}
+.container .lyj-head .head-right {
+  display: flex;
+  align-items: center;
+}
+.container .lyj-head .head-right .btn-primary {
+  margin-left: 20px;
+}
+.container .lyj-main {
+  display: flex;
+  flex: 1;
+  background: white;
+}
+.container .lyj-main .left-menu {
+  width: 279px;
+  height: 100%;
+  overflow-y: auto;
+  background: #ccc;
+}
+.container .lyj-main .left-menu li {
+  height: 40px;
+  line-height: 40px;
+}
+.container .lyj-main .left-menu li a {
+  display: block;
+  width: 250px;
+  height: 40px;
+  color: #000;
+}
+.container .lyj-main .left-menu li a:hover {
+  color: blue;
+}
+.container .lyj-main .right-main {
+  border-left: 1px solid #000;
+  flex: 1;
+}
+.container .lyj-foot {
+  display: flex;
+  height: 50px;
+  border-top: 1px solid #000;
+}

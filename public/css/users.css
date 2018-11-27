@@ -1,0 +1,41 @@
+.uses-main {
+  padding: 20px;
+}
+.uses-main .iptBox {
+  height: 100px;
+  width: 100%;
+  padding-top: 30px;
+}
+.uses-main .iptBox .iptText {
+  width: 200px;
+  height: 40px;
+}
+.uses-main .iptBox .iptSub {
+  width: 80px;
+  height: 40px;
+  border-radius: 8px;
+  outline: none;
+}
+.uses-main .table {
+  text-align: center;
+}
+.uses-main .table th {
+  text-align: center;
+}
+.uses-main .table-hover > tbody > tr:hover {
+  cursor: pointer;
+}
+.uses-main .nav-fenYe {
+  display: flex;
+  justify-content: flex-end;
+}
+.uses-main .nav-fenYe .pagination > li > a,
+.uses-main .nav-fenYe .pagination > li > span {
+  border: 1px solid black;
+  color: #000;
+}
+.uses-main .nav-fenYe .pagination > li > a:hover,
+.uses-main .nav-fenYe .pagination > li > span:hover {
+  background: blueviolet;
+  color: white;
+}

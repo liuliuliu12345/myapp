@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>xxx项目管理后台</title>
+    <link rel="stylesheet" href="/bli/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/reset.css">
+    <link rel="stylesheet" href="/css/common.css">
+    <link rel="stylesheet" href="/css/users.css">
+
+</head>
+
+<body>
+    <!-- container的样式可以写在公共样式 common -->
+    <div class="container">
+        <!-- 头部 -->
+        <%- include('./common/head.ejs') %>
+
+
+        <!-- 中部 -->
+        <div class="lyj-main">
+            <!-- 左边 -->
+            <%- include('./common/menu.ejs') %>
+            <div class="right-main uses-main">
+                <!-- 右边上部 -->
+                <div class="iptBox">
+                    <form action="">
+                        <p>
+                            <input type="text" class="iptText">
+                            <input type="submit" value="搜索" class="iptSub">
+                        </p>
+                    </form>
+                </div>
+                <div class="bs-example" data-example-id="contextual-table">
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>序号</th>
+                                <th>用户名</th>
+                                <th>用户昵称</th>
+                                <th>手机号码</th>
+                                <th>性别</th>
+                                <th>年龄</th>
+                                <th>是否管理员</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% for(var i = 0; i < list.length; i++) {%>
+                            <tr class="active">
+                                <th>
+                                    <%= i+1 %>
+                                </th>
+                                <td>
+                                    <%= list[i].username %>
+                                </td>
+                                <td>
+                                    <%= list[i].nickname %>
+                                </td>
+                                <td>
+                                    <%= list[i].phonename %>
+                                </td>
+                                <td>
+                                    <%= list[i].sex %>
+                                </td>
+                                <td>
+                                    <%= list[i].age %>
+                                </td>
+                                <td>
+                                    <%= list[i].isAdmin %>
+                                </td>
+                                <td>
+                                    <span><a href="#">修改</a></span>
+                                    <span><a href="#">删除</a></span>
+                                </td>
+                            </tr>
+
+                            <%}%>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- 分页 -->
+                <nav aria-label="..." class="nav-fenYe">
+                    <ul class="pagination pagination-sm ul1">
+                        <li><a href="#" aria-label="Previous"><span aria-hidden="true">«</span></a></li>
+                        <li><a href="#">1</a></li>
+                        <li><a href="#">2</a></li>
+                        <li><a href="#">3</a></li>
+                        <li><a href="#">4</a></li>
+                        <li><a href="#">5</a></li>
+                        <li><a href="#" aria-label="Next"><span aria-hidden="true">»</span></a></li>
+                    </ul>
+                </nav>
+            </div>
+
+        </div>
+
+
+
+        <!-- 底部 -->
+        <%- include('./common/foot.ejs') %>
+    </div>
+</body>
+
+</html>

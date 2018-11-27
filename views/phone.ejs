@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>xxx项目管理后台</title>
+    <link rel="stylesheet" href="/bli/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/reset.css">
+    <link rel="stylesheet" href="/css/common.css">
+    <link rel="stylesheet" href="/css/index.css">
+    <link rel="stylesheet" href="/css/phone.css">
+
+</head>
+
+<body>
+    <!-- container的样式可以写在公共样式 common -->
+    <div class="container">
+        <!-- 头部 -->
+        <%- include('./common/head.ejs') %>
+
+
+        <!-- 中部 -->
+        <div class="lyj-main">
+            <!-- 左边 -->
+            <%- include('./common/menu.ejs') %>
+            <!-- 右边 -->
+            <div class="right-main rightMainBox">
+                <div class="mainPhone">
+                    <input type="button" class="btnPhone" value="新增手机">
+                </div>
+                <div class="mainPhoneTable">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>序号</th>
+                                <th>图片</th>
+                                <th>手机名称</th>
+                                <th>所属品牌</th>
+                                <th>官方指导价</th>
+                                <th>二手回收价</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th scope="row">1</th>
+                                <td><img src="images/iphone.jpg" alt=""></td>
+                                <td>苹果iphone-X min</td>
+                                <td>苹果</td>
+                                <td>￥6500</td>
+                                <td>￥4500</td>
+                                <td>
+                                    <span><a href="#">修改</a></span>|
+                                    <span> <a href="#" style="color: red;">删除</a></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">2</th>
+                                <td><img src="images/huawei.jpg" alt=""></td>
+                                <td>荣耀 V10 64GB版</td>
+                                <td>荣耀</td>
+                                <td>￥4500</td>
+                                <td>￥3200</td>
+                                <td>
+                                    <span><a href="#">修改</a></span>|
+                                    <span> <a href="#" style="color: red;">删除</a></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">3</th>
+                                <td><img src="images/chuizi.jpg" alt=""></td>
+                                <td>锤子（smartisan） 坚果3</td>
+                                <td>锤子</td>
+                                <td>￥1100</td>
+                                <td>￥600</td>
+                                <td>
+                                    <span><a href="#">修改</a></span>|
+                                    <span> <a href="#" style="color: red;">删除</a></span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="newPhoneBox">
+                    <div class="newH2box">
+                        <h2>新增手机</h2>
+                    </div>
+                    <div class="newInputBox">
+                        <p>
+                            <label>
+                                <span>名称:</span>
+                                <input type="text" placeholder="请输入手机名称">
+                            </label>
+                        </p>
+                        <p>
+                            <label>
+                                <span>品牌:</span>
+                                <select name="selectName" id="selectName" class="selectName">
+                                    <option value="苹果">苹果</option>
+                                    <option value="小米">小米</option>
+                                    <option value="华为">华为</option>
+                                    <option value="锤子">锤子</option>
+                                </select>
+                            </label>
+                        </p>
+                        <p>
+                            <label>
+                                <span>官方指导价:</span>
+                                <input type="text" placeholder="请输入官方指导价">
+                            </label>
+                        </p>
+                        <p>
+                            <label>
+                                <span>二手回收价:</span>
+                                <input type="text" placeholder="请输入二手回收价">
+                            </label>
+                        </p>
+                        <p>
+                            <span>图片:</span>
+                            <input type="file" class="file">
+                        </p>
+                        <p style="text-align:center;">
+                            <input type="button" value="确认" class="btnBox" name="btnName1" id="btnBox1">
+                            <input type="button" value="取消" class="btnBox" name="btnName2" id="btnBox2">
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+        <!-- 底部 -->
+        <%- include('./common/foot.ejs') %>
+    </div>
+</body>
+
+</html>
+<script src="/jquery-1.12.4.min.js"></script>
+<script>
+    // 有开关就要判断
+    var flag = true;
+    $(".btnPhone").click(function () {
+        if (flag) {
+            $(".newPhoneBox").show();
+            flag = false;
+        } else {
+            $(".newPhoneBox").hide();
+            flag = true;
+        }
+    });
+    //取消点击
+    $("#btnBox2").click(function () {
+        $(".newPhoneBox").hide();
+        flag = true;
+    });
+</script>

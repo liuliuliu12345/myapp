@@ -1,11 +1,42 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-  </head>
-  <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
-  </body>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>xxx项目管理后台</title>
+  <link rel="stylesheet" href="/bli/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/css/reset.css">
+  <link rel="stylesheet" href="/css/common.css">
+  <link rel="stylesheet" href="/css/index.css">
+
+</head>
+
+<body>
+  <!-- container的样式可以写在公共样式 common -->
+  <!-- 页面相同的样式都可以把它抽离出去，其他的页面就可以调用 -->
+  <div class="container">
+    <!-- 头部 -->
+    <%- include('./common/head.ejs') %>
+
+
+    <!-- 不一样的内容就留在主页，中部 -->
+    <div class="lyj-main">
+      <%- include('./common/menu.ejs') %>
+      <div class="right-main">
+        <div class="imgBox">
+          <img src="images/pic.jpg" alt="">
+        </div>
+      </div>
+
+    </div>
+
+
+
+    <!-- 底部 -->
+    <%- include('./common/foot.ejs') %>
+  </div>
+</body>
+
 </html>

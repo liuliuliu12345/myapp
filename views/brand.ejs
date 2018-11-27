@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>xxx项目管理后台</title>
+    <link rel="stylesheet" href="/bli/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/reset.css">
+    <link rel="stylesheet" href="/css/common.css">
+    <link rel="stylesheet" href="/css/index.css">
+    <link rel="stylesheet" href="/css/brand.css">
+    <!-- <link rel="stylesheet" href="/font/iconfont.css"> -->
+
+</head>
+
+<body>
+    <!-- container的样式可以写在公共样式 common -->
+    <div class="container">
+        <!-- 头部 -->
+        <%- include('./common/head.ejs') %>
+
+
+        <!-- 中部 -->
+        <div class="lyj-main">
+            <%- include('./common/menu.ejs') %>
+            <div class="right-main rightMainBox">
+                <div class="btnBrandBox">
+                    <input type="button" class="btnBrand" id="btnBrand" value="新增品牌">
+                </div>
+                <div class="mainTable">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>序号</th>
+                                <th>品牌LOGO</th>
+                                <th>品牌名称</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th scope="row">1</th>
+                                <!-- iconfont的图标文件写在 reset公共文件 -->
+                                <td><i class="iconfont">&#xe678;</i></td>
+                                <td>苹果</td>
+                                <td>
+                                    <span> <a href="#">修改</a></span>
+                                    <span> <a href="#" style="color: red;">删除</a> </span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">2</th>
+                                <td><i class="iconfont">&#xe832;</i></td>
+                                <td>小米</td>
+                                <td>
+                                    <span> <a href="#">修改</a></span>
+                                    <span> <a href="#" style="color: red;">删除</a> </span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">3</th>
+                                <td><i class="iconfont">&#xe82e;</i></td>
+                                <td>华为</td>
+                                <td>
+                                    <span> <a href="#">修改</a></span>
+                                    <span> <a href="#" style="color: red;">删除</a> </span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">4</th>
+                                <td><i class="iconfont">&#xe82f;</i></td>
+                                <td>锤子</td>
+                                <td>
+                                    <span> <a href="#">修改</a></span>
+                                    <span> <a href="#" style="color: red;">删除</a> </span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- 新增品牌 -->
+                <div class="newBrandBox" id="newBrandBox">
+                    <div class="newH2box">
+                        <h2>新增品牌</h2>
+                    </div>
+                    <div class="newInputBox">
+                        <p>
+                            <label>
+                                <span>名称:</span>
+                                <input type="text" placeholder="请输入手机名称">
+                            </label>
+                        </p>
+                        <p>
+                            <label>
+                                <span>品牌:</span>
+                                <select name="selectName" id="selectName" class="selectName">
+                                    <option value="苹果">苹果</option>
+                                    <option value="小米">小米</option>
+                                    <option value="华为">华为</option>
+                                    <option value="锤子">锤子</option>
+                                </select>
+                            </label>
+                        </p>
+                        <p>
+                            <label>
+                                <span>官方指导价:</span>
+                                <input type="text" placeholder="请输入官方指导价">
+                            </label>
+                        </p>
+                        <p>
+                            <label>
+                                <span>二手回收价:</span>
+                                <input type="text" placeholder="请输入二手回收价">
+                            </label>
+                        </p>
+                        <p>
+                            <span>图片:</span>
+                            <input type="file" class="file">
+                        </p>
+                        <p style="text-align:center;">
+                            <input type="button" value="确认" class="btnBox" name="btnName1">
+                            <input type="button" value="取消" class="btnBox" name="btnName2" id="btnBox2">
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+
+
+        <!-- 底部 -->
+        <%- include('./common/foot.ejs') %>
+    </div>
+</body>
+
+</html>
+<script src="/jquery-1.12.4.min.js"></script>
+<script>
+    var flag = true;
+    $("#btnBrand").click(function () {
+        if (flag) {
+            $("#newBrandBox").show();
+            flag = false;
+        } else {
+            $("#newBrandBox").hide();
+            flag = true;
+        }
+    });
+    //取消点击
+    $("#btnBox2").click(function () {
+        $("#newBrandBox").hide();
+        flag = true;
+    });
+</script>

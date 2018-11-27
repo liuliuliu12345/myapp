@@ -1,0 +1,51 @@
+//===============================用户管理样式==============================
+
+.uses-main {
+    padding: 20px;
+
+    .iptBox {
+        height: 100px;
+        width: 100%;
+        padding-top: 30px;
+
+        .iptText {
+            width: 200px;
+            height: 40px;
+        }
+
+        .iptSub {
+            width: 80px;
+            height: 40px;
+            border-radius: 8px;
+            outline: none;
+        }
+    }
+
+    .table {
+        text-align: center;
+
+        th {
+            text-align: center;
+        }
+    }
+
+    .table-hover>tbody>tr:hover {
+        cursor: pointer;
+    }
+
+    .nav-fenYe {
+        display: flex;
+        justify-content: flex-end;
+
+        .pagination>li>a,
+        .pagination>li>span {
+            border: 1px solid black;
+            color: #000;
+
+            &:hover {
+                background: blueviolet;
+                color: white;
+            }
+        }
+    }
+}

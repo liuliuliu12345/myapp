@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>这是注册页</title>
+    <link rel="stylesheet" href="/bli/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="/css/zhuCe.css">
+</head>
+
+<body>
+    <div class="zhuCeBox">
+        <div class="boxInput">
+            <h2>注册</h2>
+            <form action="/dengLu.html" method="GET" class="form" id="form">
+                <!-- 登录用户名 -->
+                <p>
+                    <label>
+                        <strong>用户名：</strong>
+                        <input type="text" placeholder="请输入用户名" class="inputName" id="userNameVal" name="userNameVal">
+                    </label>
+                    <br>
+                    <span id="spanUser1">以中文组成用户名，不能带特殊符号和字母</span>
+                    <span style="color:green" id="spanUser2">ok</span>
+                    <span id="spanUser3" style="color:red"></span>
+                </p>
+                <!-- 密码 -->
+                <p>
+                    <label>
+                        <strong>密码：</strong>
+                        <input type="password" placeholder="请输入密码" class="inputName pwdNameVal" id="pwdNameVal" name="pwdNameVal">
+                    </label>
+                    <br>
+                    <span id="spanPwd1">以数字，字母，下划线组成，最少6位</span>
+                    <span style="color:green" id="spanPwd2">ok</span>
+                    <span id="spanPwd3" style="color: red;"></span>
+                </p>
+                <!-- 密码确认 -->
+                <p>
+                    <label>
+                        <strong>确认密码：</strong>
+                        <input type="password" placeholder="请确认密码" class="inputName pwdSNameVal" id="pwdSNameVal" name="pwdSNameVal">
+                    </label>
+                    <br>
+                    <span style="color:green" id="spanPwds1">ok</span>
+                    <span style="color:red;" id="spanPwds2">密码不一致</span>
+                    <span id="spanPwds3">请确认密码</span>
+                    <span id="spanPwds4"></span>
+                </p>
+                <!-- 昵称 -->
+                <p>
+                    <label>
+                        <strong>昵称：</strong>
+                        <input type="text" placeholder="请输入昵称" class="inputName niChengVal" id="niChengVal" name="niChengVal">
+                    </label>
+                    <span style="color:red;" id="spanNicheng1">昵称不能带特殊符号,最低2位，最高4位</span>
+                    <span id="spanNicheng2">以字母或中文组成，不能是数字和特殊符号</span>
+                    <span id="spanNicheng3" style="color:green;"></span>
+                </p>
+                <!-- 手机号码 -->
+                <p>
+                    <label>
+                        <strong>手机号码：</strong>
+                        <input type="text" placeholder="请输入手机号码" class="inputName phoneVal" id="phoneVal" name="phoneVal">
+                    </label>
+                    <br>
+                    <span id="spanPhone1">手机号码为11位数，不能带特殊符号</span>
+                    <span id="spanPhone2"></span>
+
+                </p>
+                <!-- 管理员 -->
+                <p style="height:35px;">
+                    <strong>管理员:</strong>
+                    <input type="radio" class="inputBox" name="radioBox" checked value="option1">yes
+                    <input type="radio" class="inputBox" name="radioBox" value="option2">no
+                </p>
+                <!-- 注册按钮 -->
+                <div class="submitBox">
+                    <input type="submit" value="注册" class="submit" id="submit">
+                    <a href="dengLu.html">直接登录</a>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+</body>
+
+</html>
+<script src="/jquery-1.12.4.min.js"></script>
+<script>
+    // 用户名获取光标
+    $("#userNameVal").focus(function () {
+        $("#spanUser1").show();
+        $("#spanUser2").hide();
+        $("#spanUser3").hide();
+    });
+    // 用户名失去光标
+    $("#userNameVal").blur(function () { //keyup
+        $("#spanUser1").hide();
+        // 用户名失去光标方法调用
+        checkedUser();
+    });
+    //用户名失去光标方法
+    var flag = false;
+
+    function checkedUser() {
+        var reg = /^[\u4e00-\u9fa5]{2,4}$/;
+        if (reg.test(userNameVal.value)) {
+            // 这里还要到后台获取用户唯一验证
+            $("#spanUser2").show();
+            flag = true;
+        } else {
+            $("#spanUser3").text('只能输入2-4位中文').show();
+            flag = false;
+        }
+    };
+
+    // 密码框获取光标
+    $("#pwdNameVal").focus(function () {
+        $("#spanPwd1").show();
+        $("#spanPwd3").hide(); //错误
+        $("#spanPwd2").hide(); //ok
+
+    });
+    // 密码框失去光标
+    $("#pwdNameVal").blur(function () {
+        $("#spanPwd1").hide();
+        $("#spanPwd2").hide();
+        //密码方法验证
+        checkedPwd();
+    });
+
+    // 密码验证方法
+    function checkedPwd() {
+        var reg = /^\w{6,15}$/;
+        if (reg.test(pwdNameVal.value)) {
+            $("#spanPwd2").show();
+            flag = true;
+        } else {
+            $("#spanPwd3").html('不能有特殊符号，最少6位，最高15位').show();
+            flag = false;
+        }
+
+    }
+
+    // 密码确认获得光标
+    $("#pwdSNameVal").focus(function () {
+        $("#spanPwds3").show();
+        $("#spanPwds1").hide();
+        $("#spanPwds2").hide();
+    });
+    // 密码确认失去光标
+    $("#pwdSNameVal").blur(function () {
+        $("#spanPwds3").hide();
+        // 密码确认方法调用
+        checkedPwds();
+    });
+
+    // 密码确认方法
+    function checkedPwds() {
+        if (pwdNameVal.value != pwdSNameVal.value) {
+            $("#spanPwds2").show();
+            flag = false;
+        } else {
+            $("#spanPwds1").show();
+            flag = true;
+        }
+    }
+
+    // 昵称获得光标
+    $("#niChengVal").focus(function () {
+        $("#spanNicheng2").show();
+        $("#spanNicheng3").hide();
+        $("#spanNicheng1").hide();
+
+    })
+    //昵称失去光标
+    $("#niChengVal").blur(function () {
+        $("#spanNicheng2").hide();
+        // 昵称方法调用
+        checkedniCheng();
+    });
+
+    function checkedniCheng() {
+        // 以大小字母或中文
+        var reg = /^([a-zA-Z]|[\u4e00-\u9fa5]){2,5}$/;
+        if (reg.test(niChengVal.value)) {
+            $("#spanNicheng3").text('ok').show();
+            flag = true;
+        } else {
+            $("#spanNicheng1").show();
+            flag = false;
+        }
+    };
+
+    //手机获得光标
+    $("#phoneVal").focus(function () {
+        $("#spanPhone1").show();
+        $("#spanPhone2").hide();
+    });
+    //手机失去光标
+    $("#phoneVal").blur(function () {
+        $("#spanPhone1").hide();
+        checkedPhone();
+    });
+
+    function checkedPhone() {
+        var reg = /^1[3,5,8,7]\d{9}$/;
+        if (reg.test(phoneVal.value)) {
+            $("#spanPhone2").html('ok').show().css('color', 'green');
+            flag = true;
+        } else {
+            $("#spanPhone2").html('不能有特殊字符，以11位数字组成').css('color', 'red').show();
+            flag = false;
+
+        }
+    };
+
+    //控制表单是否提交
+    $("#form").submit(function () {
+        if (flag) {
+            alert("ok")
+            return true;
+        } else {
+            alert("no")
+            return false;
+        }
+    });
+</script>

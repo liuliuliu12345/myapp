@@ -1,0 +1,87 @@
+/* 整个项目都会用到的css */
+body,
+html {
+    height: 100%;
+    background: #ccc;
+}
+
+// ==========================首页公共样式=========================
+.container {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    flex-direction: column;
+
+    .lyj-head {
+        display: flex;
+        height: 80px;
+        border-bottom: 1px solid #000;
+        justify-content: space-between;
+        align-items: center;
+
+        .logo {
+            font-size: 26px;
+        }
+
+        .head-right {
+            display: flex;
+            align-items: center;
+
+            .btn-primary {
+                margin-left: 20px;
+            }
+        }
+    }
+
+    ;
+
+    .lyj-main {
+        display: flex;
+        flex: 1;
+        background: white;
+
+        .left-menu {
+            width: 279px;
+            height: 100%;
+            overflow-y: auto;
+            background: #ccc;
+
+            li {
+                height: 40px;
+                // border-bottom: 1px solid #000;
+                line-height: 40px;
+
+                a {
+                    display: block;
+                    width: 250px;
+                    height: 40px;
+                    color: #000;
+
+                    &:hover {
+                        color: blue;
+                    }
+                }
+            }
+
+        }
+
+        .right-main {
+            border-left: 1px solid #000;
+            flex: 1;
+        }
+
+    }
+
+    ;
+
+    .lyj-foot {
+        display: flex;
+        height: 50px;
+        border-top: 1px solid #000;
+    }
+
+    ;
+
+}
+
+;
