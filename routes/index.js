@@ -10,7 +10,7 @@ router.get('/', function (req, res, next) {
   });
 });
 
-// 用户管理,如果url地址响应的数据，就会调用这个函数返回给前端
+// 用户管理,如果url地址响应的数据，就会调用这个函数返回给前端，用户管理不写这里就url就登陆不了
 // router.get('/users.html', function (req, res) {
 //   res.render('users'); //页面
 // });

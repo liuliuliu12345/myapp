@@ -50,7 +50,7 @@
                         </thead>
                         <tbody>
                             <% for(var i = 0; i < list.length; i++) {%>
-                            <tr class="active">
+                            <tr class="active" scope="row">
                                 <th>
                                     <%= i+1 %>
                                 </th>
@@ -73,8 +73,11 @@
                                     <%= list[i].isAdmin %>
                                 </td>
                                 <td>
+
                                     <span><a href="#">修改</a></span>
-                                    <span><a href="#">删除</a></span>
+                                    <% if (!list[i].isAdmin) {%>
+                                    <span><a href="/users/delete?id=<%= list[i]._id %>">删除</a></span>
+                                    <%}%>
                                 </td>
                             </tr>
 
@@ -86,13 +89,25 @@
                 <!-- 分页 -->
                 <nav aria-label="..." class="nav-fenYe">
                     <ul class="pagination pagination-sm ul1">
-                        <li><a href="#" aria-label="Previous"><span aria-hidden="true">«</span></a></li>
-                        <li><a href="#">1</a></li>
-                        <li><a href="#">2</a></li>
-                        <li><a href="#">3</a></li>
-                        <li><a href="#">4</a></li>
-                        <li><a href="#">5</a></li>
-                        <li><a href="#" aria-label="Next"><span aria-hidden="true">»</span></a></li>
+                        <li>
+                            <a href="/users?page=<%= currentPage - 1 < 1 ? 1: currentPage - 1 %>&pageSize=<%= pageSize %>"
+                                aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                        <% for (var i = 0; i < totalPage ; i++) {%>
+                        <li class="<%= currentPage === (i+1) ? 'active': '' %>">
+                            <a href="/users?page=<%= i+1 %>&pageSize=<%= pageSize %>">
+                                <%= i + 1%></a>
+                        </li>
+
+                        <%}%>
+                        <li>
+                            <a href="/users?page=<%= currentPage + 1 > totalPage ? totalPage: currentPage + 1 %>&pageSize=<%= pageSize %>"
+                                aria-label="Next" aria-label="Next">
+                                <span aria-hidden="true">»</span>
+                            </a>
+                        </li>
                     </ul>
                 </nav>
             </div>

@@ -12,7 +12,7 @@ html {
 }
 .zhuCeBox .boxInput {
   width: 450px;
-  height: 550px;
+  height: 650px;
   border: 1px solid #000;
   box-shadow: -5px -5px 30px 10px #ccc, 5px 5px 30px 10px #ccc;
   position: absolute;
@@ -21,6 +21,12 @@ html {
   bottom: 0;
   left: 0;
   margin: auto;
+  transition: all 2s;
+}
+.zhuCeBox .boxInput:hover {
+  transform: translateY(-20px);
+  background: #ccc;
+  box-shadow: -5px -5px 30px 10px lightblue, 5px 5px 30px 10px lightblue;
 }
 .zhuCeBox .boxInput h2 {
   font-weight: 600;
