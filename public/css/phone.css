@@ -22,6 +22,11 @@
 .rightMainBox .mainPhoneTable .table th {
   text-align: center;
 }
+.rightMainBox .nav-fenYe {
+  display: flex;
+  justify-content: flex-end;
+  margin-right: 20px;
+}
 .rightMainBox .newPhoneBox {
   position: absolute;
   top: 0px;

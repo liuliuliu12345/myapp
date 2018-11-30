@@ -30,6 +30,7 @@
                 <div class="mainPhone">
                     <input type="button" class="btnPhone" value="新增手机">
                 </div>
+                <!-- 列表 -->
                 <div class="mainPhoneTable">
                     <table class="table table-bordered">
                         <thead>
@@ -44,87 +45,107 @@
                             </tr>
                         </thead>
                         <tbody>
+                            <% for (var i = 0; i < list.length; i++) { %>
+
                             <tr>
-                                <th scope="row">1</th>
-                                <td><img src="images/iphone.jpg" alt=""></td>
-                                <td>苹果iphone-X min</td>
-                                <td>苹果</td>
-                                <td>￥6500</td>
-                                <td>￥4500</td>
+                                <th scope="row">
+                                    <%= i+1%>
+                                </th>
+                                <td><img src="/<%= list[i].images %>" alt=""></td>
+                                <!-- 数据库的 phonename -->
+                                <td>
+                                    <%= list[i].phonename %>
+                                </td>
+                                <td>
+                                    <%= list[i].Fendername %>
+                                </td>
+                                <td>￥
+                                    <%= list[i].Msrpname %>
+                                </td>
+                                <td>￥
+                                    <%= list[i].ErshouMsrp %>
+                                </td>
                                 <td>
                                     <span><a href="#">修改</a></span>|
-                                    <span> <a href="#" style="color: red;">删除</a></span>
+                                    <span> <a href="/users/deletePhone?id=<%= list[i]._id %>" style="color: red;">删除</a></span>
                                 </td>
                             </tr>
-                            <tr>
-                                <th scope="row">2</th>
-                                <td><img src="images/huawei.jpg" alt=""></td>
-                                <td>荣耀 V10 64GB版</td>
-                                <td>荣耀</td>
-                                <td>￥4500</td>
-                                <td>￥3200</td>
-                                <td>
-                                    <span><a href="#">修改</a></span>|
-                                    <span> <a href="#" style="color: red;">删除</a></span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row">3</th>
-                                <td><img src="images/chuizi.jpg" alt=""></td>
-                                <td>锤子（smartisan） 坚果3</td>
-                                <td>锤子</td>
-                                <td>￥1100</td>
-                                <td>￥600</td>
-                                <td>
-                                    <span><a href="#">修改</a></span>|
-                                    <span> <a href="#" style="color: red;">删除</a></span>
-                                </td>
-                            </tr>
+                            <% } %>
                         </tbody>
                     </table>
                 </div>
+
+                <!-- 分页 -->
+                <nav aria-label="..." class="nav-fenYe">
+                    <ul class="pagination pagination-sm ul1">
+                        <li>
+                            <a href="/users/phone?page=<%= currentPage - 1 < 1 ? 1: currentPage - 1 %>&pageSize=<%= pageSize %>"
+                                aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                        <% for (var i = 0; i < totalPage ; i++) {%>
+                        <li class="<%= currentPage === (i+1) ? 'active': '' %>">
+                            <a href="/users/phone?page=<%= i+1 %>&pageSize=<%= pageSize %>">
+                                <%= i + 1%></a>
+                        </li>
+
+                        <%}%>
+                        <li>
+                            <a href="/users/phone?page=<%= currentPage + 1 > totalPage ? totalPage: currentPage + 1 %>&pageSize=<%= pageSize %>"
+                                aria-label="Next" aria-label="Next">
+                                <span aria-hidden="true">»</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+
+
+                <!-- 新增手机 -->
                 <div class="newPhoneBox">
                     <div class="newH2box">
                         <h2>新增手机</h2>
                     </div>
                     <div class="newInputBox">
-                        <p>
-                            <label>
-                                <span>名称:</span>
-                                <input type="text" placeholder="请输入手机名称">
-                            </label>
-                        </p>
-                        <p>
-                            <label>
-                                <span>品牌:</span>
-                                <select name="selectName" id="selectName" class="selectName">
-                                    <option value="苹果">苹果</option>
-                                    <option value="小米">小米</option>
-                                    <option value="华为">华为</option>
-                                    <option value="锤子">锤子</option>
-                                </select>
-                            </label>
-                        </p>
-                        <p>
-                            <label>
-                                <span>官方指导价:</span>
-                                <input type="text" placeholder="请输入官方指导价">
-                            </label>
-                        </p>
-                        <p>
-                            <label>
-                                <span>二手回收价:</span>
-                                <input type="text" placeholder="请输入二手回收价">
-                            </label>
-                        </p>
-                        <p>
-                            <span>图片:</span>
-                            <input type="file" class="file">
-                        </p>
-                        <p style="text-align:center;">
-                            <input type="button" value="确认" class="btnBox" name="btnName1" id="btnBox1">
-                            <input type="button" value="取消" class="btnBox" name="btnName2" id="btnBox2">
-                        </p>
+                        <form action="/users/addPhone" method="POST" enctype="multipart/form-data">
+                            <p>
+                                <label>
+                                    <span>名称:</span>
+                                    <input type="text" name="phoneName" placeholder="请输入手机名称">
+                                </label>
+                            </p>
+                            <p>
+                                <label>
+                                    <span>品牌:</span>
+                                    <select name="Fendername" id="selectName" class="selectName">
+                                        <option value="苹果">苹果</option>
+                                        <option value="小米">小米</option>
+                                        <option value="华为">华为</option>
+                                        <option value="锤子">锤子</option>
+                                    </select>
+                                </label>
+                            </p>
+                            <p>
+                                <label>
+                                    <span>官方指导价:</span>
+                                    <input type="text" placeholder="请输入官方指导价" name="Msrpname">
+                                </label>
+                            </p>
+                            <p>
+                                <label>
+                                    <span>二手回收价:</span>
+                                    <input type="text" placeholder="请输入二手回收价" name="ErshouMsrp">
+                                </label>
+                            </p>
+                            <p>
+                                <span>图片:</span>
+                                <input type="file" class="file" name="fileImages">
+                            </p>
+                            <p style="text-align:center;">
+                                <input type="submit" value="确认" class="btnBox" name="btnName1" id="btnBox1">
+                                <input type="button" value="取消" class="btnBox" name="btnName2" id="btnBox2">
+                            </p>
+                        </form>
                     </div>
                 </div>
 

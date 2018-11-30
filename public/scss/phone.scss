@@ -1,6 +1,7 @@
 .rightMainBox {
     position: relative;
 
+
     // 新增手机
     .mainPhone {
         height: 100px;
@@ -28,6 +29,13 @@
             }
 
         }
+    }
+
+    // 分页
+    .nav-fenYe {
+        display: flex;
+        justify-content: flex-end;
+        margin-right: 20px;
     }
 
     // 新增手机盒子

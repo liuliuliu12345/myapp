@@ -40,46 +40,56 @@
                             </tr>
                         </thead>
                         <tbody>
+                            <%  for(var i=0;i < list.length;i++){%>
                             <tr>
-                                <th scope="row">1</th>
+                                <th scope="row">
+                                    <%= i+1 %>
+                                </th>
                                 <!-- iconfont的图标文件写在 reset公共文件 -->
-                                <td><i class="iconfont">&#xe678;</i></td>
-                                <td>苹果</td>
+                                <!-- <td><i class="iconfont">&#xe678;</i></td> -->
+                                <td><img src="/<%= list[i].drandLogo %>" alt="" style="width:50px;"></td>
+                                <td>
+                                    <!-- 数据库的 drandname -->
+                                    <%= list[i].drandname %>
+                                </td>
                                 <td>
                                     <span> <a href="#">修改</a></span>
-                                    <span> <a href="#" style="color: red;">删除</a> </span>
+                                    <span> <a href="/users/deletebrand?id=<%= list[i]._id %>" style="color: red;">删除</a>
+                                    </span>
                                 </td>
                             </tr>
-                            <tr>
-                                <th scope="row">2</th>
-                                <td><i class="iconfont">&#xe832;</i></td>
-                                <td>小米</td>
-                                <td>
-                                    <span> <a href="#">修改</a></span>
-                                    <span> <a href="#" style="color: red;">删除</a> </span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row">3</th>
-                                <td><i class="iconfont">&#xe82e;</i></td>
-                                <td>华为</td>
-                                <td>
-                                    <span> <a href="#">修改</a></span>
-                                    <span> <a href="#" style="color: red;">删除</a> </span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row">4</th>
-                                <td><i class="iconfont">&#xe82f;</i></td>
-                                <td>锤子</td>
-                                <td>
-                                    <span> <a href="#">修改</a></span>
-                                    <span> <a href="#" style="color: red;">删除</a> </span>
-                                </td>
-                            </tr>
+                            <% } %>
                         </tbody>
                     </table>
                 </div>
+
+                <!-- 分页 -->
+                <nav aria-label="..." class="nav-fenYe">
+                    <ul class="pagination pagination-sm ul1">
+                        <li>
+                            <a href="/users/brand?page=<%= currentPage - 1 < 1 ? 1: currentPage - 1 %>&pageSize=<%= pageSize %>"
+                                aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                        <% for (var i = 0; i < totalPage ; i++) {%>
+                        <li class="<%= currentPage === (i+1) ? 'active': '' %>">
+                            <a href="/users/brand?page=<%= i+1 %>&pageSize=<%= pageSize %>">
+                                <%= i + 1%></a>
+                        </li>
+
+                        <%}%>
+                        <li>
+                            <a href="/users/brand?page=<%= currentPage + 1 > totalPage ? totalPage: currentPage + 1 %>&pageSize=<%= pageSize %>"
+                                aria-label="Next" aria-label="Next">
+                                <span aria-hidden="true">»</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+
+
+
 
                 <!-- 新增品牌 -->
                 <div class="newBrandBox" id="newBrandBox">
@@ -87,43 +97,23 @@
                         <h2>新增品牌</h2>
                     </div>
                     <div class="newInputBox">
-                        <p>
-                            <label>
-                                <span>名称:</span>
-                                <input type="text" placeholder="请输入手机名称">
-                            </label>
-                        </p>
-                        <p>
-                            <label>
-                                <span>品牌:</span>
-                                <select name="selectName" id="selectName" class="selectName">
-                                    <option value="苹果">苹果</option>
-                                    <option value="小米">小米</option>
-                                    <option value="华为">华为</option>
-                                    <option value="锤子">锤子</option>
-                                </select>
-                            </label>
-                        </p>
-                        <p>
-                            <label>
-                                <span>官方指导价:</span>
-                                <input type="text" placeholder="请输入官方指导价">
-                            </label>
-                        </p>
-                        <p>
-                            <label>
-                                <span>二手回收价:</span>
-                                <input type="text" placeholder="请输入二手回收价">
-                            </label>
-                        </p>
-                        <p>
-                            <span>图片:</span>
-                            <input type="file" class="file">
-                        </p>
-                        <p style="text-align:center;">
-                            <input type="button" value="确认" class="btnBox" name="btnName1">
-                            <input type="button" value="取消" class="btnBox" name="btnName2" id="btnBox2">
-                        </p>
+                        <form action="/users/addBrand" method="POST" enctype="multipart/form-data">
+
+                            <p>
+                                <label>
+                                    <span>名称:</span>
+                                    <input type="text" placeholder="请输入手机名称" name="drandname">
+                                </label>
+                            </p>
+                            <p>
+                                <span>图片:</span>
+                                <input type="file" class="file" name="drandLogo">
+                            </p>
+                            <p style="text-align:center;">
+                                <input type="submit" value="确认" class="btnBox" name="btnName1">
+                                <input type="button" value="取消" class="btnBox" name="btnName2" id="btnBox2">
+                            </p>
+                        </form>
                     </div>
 
                 </div>

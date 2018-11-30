@@ -28,6 +28,11 @@
   width: 80px;
   height: 80px;
 }
+.rightMainBox .nav-fenYe {
+  display: flex;
+  justify-content: flex-end;
+  margin-right: 20px;
+}
 .rightMainBox .newBrandBox {
   position: absolute;
   top: 0px;

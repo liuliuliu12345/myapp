@@ -1,21 +1,25 @@
-var express = require('express');
-// 把mongodb 模块银引入
-var MongoClient = require('mongodb').MongoClient;
-var ObjectId = require('mongodb').ObjectId;
-var async = require("async");
-var router = express.Router();
+// index跳转过来，代码都写在这里
+var express = require('express'); //ejs模块的功能
+var router = express.Router(); //ejs模块功能调用
+var multer = require('multer'); //图片上传功能
+var MongoClient = require('mongodb').MongoClient; //链接数据库
+var async = require("async"); //异步
 
-//构建一个mongodb url地址
 var url = 'mongodb://127.0.0.1:27017';
+var upload = multer({ //存到本地的图片路径
+  dest: 'C:/tmp'
+});
+var fs = require('fs'); //提供了一些使用函数，用于处理url与解析。
+var path = require('path'); //处理文件与目录的路径
 
 
 
-//用户的信息保存在users文件里面 如果用户访问的是localhost：3000/users
-// 用户管理页,用户信息分页
+
+// 用户管理,信息分页
 router.get('/', function (req, res, next) {
-  var page = parseInt(req.query.page) || 1; //页面
+  var page = parseInt(req.query.page) || 1; //前端传过来的页面，默认为第一页
   var pageSize = parseInt(req.query.pageSize) || 5; //每页显示的条数
-  var totalSize = 0; //总条数
+  var totalSize = 0; //总条数得查询数据库得来
   var data = [];
 
   // 将用户的列表从数据库里捞出来，，操作数据库 mongodb
@@ -67,6 +71,7 @@ router.get('/', function (req, res, next) {
         var totalPage = Math.ceil(totalSize / pageSize); //总页数
         // console.log(totalPage);
         res.render('users', {
+          // 渲染到页面
           list: results[1],
           totalPage: totalPage,
           pageSize: pageSize,
@@ -75,34 +80,263 @@ router.get('/', function (req, res, next) {
         })
       }
     })
-
-
-
-    // 选择你要操作的集合（数据表）,查出来.用find（）.以数组的方式暴露出来toArray();
-    // db.collection('user').find().toArray(function (err, data) {
-    //   // 错误优先处理
-    //   if (err) {
-    //     console.log('查询用户信息错误', err);
-    //     // 有错误就渲染error 这个文件
-    //     res.render('error', {
-    //       message: '查询失败',
-    //       // 将err错误对象传过 error
-    //       error: err
-    //     });
-    //   } else {
-    //     console.log(data);
-    //     // 查询成功之后就把data渲染到页面
-    //     res.render('users', {
-    //       list: data
-    //     });
-    //   }
-
-    //   // 查询完毕后记得关闭数据库的链接
-    //   client.close();
-    // });
   });
 
 });
+
+// 手机管理，信息分页
+router.get('/phone', function (req, res) {
+  // res.send('===================')
+  var page = parseInt(req.query.page) || 1; //前端传过来的页面，默认为第一页
+  var pageSize = parseInt(req.query.pageSize) || 3; //每页显示的条数
+  var totalSize = 0; //总条数得查询数据库得来
+  var data = [];
+
+  // 将用户的列表从数据库里捞出来，，操作数据库 mongodb
+  // MongoClient 链接url地址，第二个参数是回调函数（client变量）
+  MongoClient.connect(url, {
+    useNewUrlParser: true
+  }, function (err, client) { //链接url地址
+    // 如果err存在，链接数据库失败
+    if (err) {
+      console.log('链接数据库失败', err);
+      res.render('error', {
+        message: '链接数据库失败',
+        error: err
+      });
+      // return就不再执行下去了
+      return;
+    }
+
+    console.log(1);
+    // 数据库的名字 得到的是一个数据库的对象
+    var db = client.db('station');
+    async.series([
+      function (cb) {
+        db.collection('phone').find().count(function (err, num) {
+          if (err) {
+            cb(err);
+          } else {
+            totalSize = num;
+            cb(null);
+          }
+        })
+      },
+      function (cb) {
+        db.collection('phone').find().limit(pageSize).skip(page * pageSize - pageSize).toArray(function (err, data) {
+          if (err) {
+            cb(err)
+          } else {
+            cb(null, data)
+          }
+        })
+      }
+    ], function (err, results) {
+      if (err) {
+        res.render('error', {
+          message: '错误',
+          error: err
+        })
+      } else {
+        var totalPage = Math.ceil(totalSize / pageSize); //总页数
+
+        res.render('phone', {
+          // 渲染到页面
+          list: results[1],
+          totalPage: totalPage,
+          pageSize: pageSize,
+          currentPage: page
+
+        })
+
+      }
+    })
+  });
+
+});
+
+// 手机增加
+router.post('/addPhone', upload.single('fileImages'), function (req, res) {
+  // res.send(req.body)
+  // 如果想要通过浏览器访问到这张图片的话，是不是需要将图片放到 public里面img去
+  var filename = 'images/' + new Date().getTime() + '_' + req.file.originalname;
+  var newFileName = path.resolve(__dirname, '../public/', filename); //public文件夹下面的 filename
+  try {
+    // fs.renameSync(req.file.path, newFileName);
+    var data = fs.readFileSync(req.file.path);
+    fs.writeFileSync(newFileName, data);
+
+    // console.log(req.body);
+    // res.send('上传成功');
+    // 操作数据库写入
+    MongoClient.connect(url, {
+      useNewUrlParser: true
+    }, function (err, client) {
+
+      var db = client.db('station');
+      db.collection('phone').insertOne({
+        //数据库商品名：接收要增加商品的名
+        phonename: req.body.phoneName,
+        Fendername: req.body.Fendername,
+        Msrpname: req.body.Msrpname,
+        ErshouMsrp: req.body.ErshouMsrp,
+        images: filename
+      }, function (err) {
+        res.redirect('/phone.html');
+      })
+
+    })
+
+  } catch (error) {
+    res.render('error', {
+      message: '新增手机失败',
+      error: error
+    })
+  }
+
+})
+
+// 品牌管理,品牌到数据库渲染数据
+router.get('/brand', function (req, res) {
+  var page = parseInt(req.query.page) || 1; //前端传过来的页面，默认为第一页
+  var pageSize = parseInt(req.query.pageSize) || 4; //每页显示的条数
+  var totalSize = 0; //总条数得查询数据库得来
+  var data = [];
+
+  // 将用户的列表从数据库里捞出来，，操作数据库 mongodb
+  // MongoClient 链接url地址，第二个参数是回调函数（client变量）
+  MongoClient.connect(url, {
+    useNewUrlParser: true
+  }, function (err, client) { //链接url地址
+    // 如果err存在，链接数据库失败
+    if (err) {
+      console.log('链接数据库失败', err);
+      res.render('error', {
+        message: '链接数据库失败',
+        error: err
+      });
+      // return就不再执行下去了
+      return;
+    }
+
+    console.log(1);
+    // 数据库的名字 得到的是一个数据库的对象
+    var db = client.db('station');
+    async.series([
+      function (cb) {
+        db.collection('drandname').find().count(function (err, num) {
+          if (err) {
+            cb(err);
+          } else {
+            totalSize = num;
+            cb(null);
+          }
+        })
+      },
+      function (cb) {
+        db.collection('drandname').find().limit(pageSize).skip(page * pageSize - pageSize).toArray(function (err, data) {
+          if (err) {
+            cb(err)
+          } else {
+            cb(null, data)
+          }
+        })
+      }
+    ], function (err, results) {
+      if (err) {
+        res.render('error', {
+          message: '错误',
+          error: err
+        })
+      } else {
+        var totalPage = Math.ceil(totalSize / pageSize); //总页数
+
+        res.render('brand', {
+          // 渲染到页面
+          list: results[1],
+          totalPage: totalPage,
+          pageSize: pageSize,
+          currentPage: page
+
+        })
+
+      }
+    })
+  });
+
+  // ==============
+  // MongoClient.connect(url, {
+  //   useNewUrlParser: true
+  // }, function (err, client) {
+  //   if (err) {
+  //     res.render('error', {
+  //       message: '链接失败',
+  //       error: err
+  //     })
+  //     return;
+  //   }
+  //   var db = client.db('station');
+  //   db.collection('drandname').find().toArray(function (err, data) {
+  //     if (err) {
+  //       res.render('error', {
+  //         message: '失败',
+  //         error: err
+  //       })
+  //       return;
+  //     }
+  //     // console.log(data + '=======================');
+  //     res.render('brand', {
+  //       //后台渲染到的参数传到前端的
+  //       list: data
+  //     });
+
+  //     // 不管成功与否都要结束
+  //     client.close();
+  //   })
+  // })
+
+
+});
+
+// 品牌增加
+router.post('/addBrand', upload.single('drandLogo'), function (req, res) {
+  // res.send(req.body)
+  // 如果想要通过浏览器访问到这张图片的话，是不是需要将图片放到 public里面img去
+  var filename = 'images/' + new Date().getTime() + '_' + req.file.originalname;
+  var newFileName = path.resolve(__dirname, '../public/', filename); //public文件夹下面的 filename
+  try {
+    // fs.renameSync(req.file.path, newFileName);
+    var data = fs.readFileSync(req.file.path);
+    fs.writeFileSync(newFileName, data);
+
+    // console.log(req.body);
+    // res.send('上传成功');
+    // 操作数据库写入
+    MongoClient.connect(url, {
+      useNewUrlParser: true
+    }, function (err, client) {
+
+      var db = client.db('station');
+      db.collection('drandname').insertOne({
+        //数据库商品名：接收要增加商品的名
+        drandname: req.body.drandname,
+        drandLogo: filename
+      }, function (err) {
+        res.redirect('/brand.html');
+      })
+
+    })
+
+  } catch (error) {
+    res.render('error', {
+      message: '新增手机失败',
+      error: error
+    })
+  }
+
+})
+
+
 
 
 
@@ -161,10 +395,18 @@ router.post('/dengLu', function (req, res) {
           error: new Error('用户没注册？登录失败')
         })
       } else {
-        // 登录成功，保存到 昵称到cookie，后面的就可以调用
+        // 登录成功， 保存到 昵称到cookie， 后面的就可以调用
         res.cookie('nickname', data[0].nickname, { //data得到的是数组
           maxAge: 60 * 60 * 1000
         });
+        // if (!data[0].nickname) {
+        //   //请登录
+        // } else {
+        //   res.send('你好' + data[0].nickname + ',欢迎您');
+        // }
+        // res.localStorage('nickname', data[0].nickname);
+
+
         //刷新页面
         res.redirect('/');
       }
@@ -278,6 +520,72 @@ router.get('/delete', function (req, res) {
       } else {
         // 删除成功，页面刷新
         res.redirect('/users');
+      }
+    })
+  })
+});
+
+// 手机信息删除
+router.get('/deletePhone', function (req, res) {
+  var id = req.query.id;
+
+  MongoClient.connect(url, {
+    useNewUrlParser: true
+  }, function (err, client) {
+    if (err) {
+      res.render('error', {
+        message: '链接失败',
+        error: err
+      })
+      return;
+    }
+    var db = client.db('station');
+    db.collection('phone').deleteOne({
+      _id: ObjectId(id)
+    }, function (err, data) {
+      console.log(data);
+      if (err) {
+        res.render('error', {
+          message: '删除失败',
+          error: err
+        })
+
+      } else {
+        // 删除成功，手机页面刷新
+        res.redirect('/phone.html');
+      }
+    })
+  })
+});
+
+// 手机品牌删除
+router.get('/deletebrand', function (req, res) {
+  var id = req.query.id;
+
+  MongoClient.connect(url, {
+    useNewUrlParser: true
+  }, function (err, client) {
+    if (err) {
+      res.render('error', {
+        message: '链接失败',
+        error: err
+      })
+      return;
+    }
+    var db = client.db('station');
+    db.collection('drandname').deleteOne({
+      _id: ObjectId(id)
+    }, function (err, data) {
+      console.log(data);
+      if (err) {
+        res.render('error', {
+          message: '删除失败',
+          error: err
+        })
+
+      } else {
+        // 删除成功，手机页面刷新
+        res.redirect('/brand.html');
       }
     })
   })
