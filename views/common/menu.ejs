@@ -1,5 +1,29 @@
 <ul class="left-menu left-zhuCe">
-    <li><a href="/users">用户管理</a></li>
+    <li id="liUser"><a href="/users">用户管理</a></li>
     <li><a href="/phone.html">手机管理</a></li>
     <li><a href="/brand.html">品牌管理</a></li>
 </ul>
+
+<script>
+    var liUser = document.getElementById('liUser');
+    var pNameOne = document.getElementById('pNameOne');
+
+    function getCookieOne(cname1) {
+        var name = cname1 + "=";
+        var ca = document.cookie.split(';');
+        for (var i = 0; i < ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0) == ' ') c = c.substring(1);
+            if (c.indexOf(name) != -1) return c.substring(name.length, c.length);
+        }
+        return "";
+    }
+    getCookieOne('isAdmin');
+    if (getCookieOne('isAdmin') == 'true') {
+        liUser.style.display = 'block'; //用户
+        pNameOne.style.display = 'none';
+    } else {
+        liUser.style.display = 'none';
+    }
+    // console.log(getCookieOne('isAdmin'))
+</script>

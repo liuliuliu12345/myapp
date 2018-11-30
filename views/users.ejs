@@ -27,9 +27,9 @@
             <div class="right-main uses-main">
                 <!-- 右边上部 -->
                 <div class="iptBox">
-                    <form action="">
+                    <form action="/users/search" method="POST">
                         <p>
-                            <input type="text" class="iptText">
+                            <input type="text" class="iptText" name="iptText">
                             <input type="submit" value="搜索" class="iptSub">
                         </p>
                     </form>
@@ -73,14 +73,12 @@
                                     <%= list[i].isAdmin %>
                                 </td>
                                 <td>
-
-                                    <span><a href="#">修改</a></span>
-                                    <% if (!list[i].isAdmin) {%>
+                                    <% if(list[i].nickname){ %>
+                                    <span><a href="#" id="xiuGaiName">修改</a></span>
+                                    <% } %>
                                     <span><a href="/users/delete?id=<%= list[i]._id %>">删除</a></span>
-                                    <%}%>
                                 </td>
                             </tr>
-
                             <%}%>
                         </tbody>
                     </table>
@@ -114,6 +112,55 @@
 
         </div>
 
+        <!-- 修改 -->
+        <div class="newPhoneBox">
+            <div class="newH2box">
+                <h2>信息修改</h2>
+            </div>
+            <div class="newInputBox">
+                <form action="/users/addPhone" method="POST" enctype="multipart/form-data">
+                    <p>
+                        <label>
+                            <span>用户名:</span>
+                            <input type="text" name="phoneName">
+                        </label>
+                    </p>
+                    <p>
+                        <label>
+                            <span>用户昵称:</span>
+                            <input type="text" name="phoneName">
+
+                        </label>
+                    </p>
+                    <p>
+                        <label>
+                            <span>手机号码:</span>
+                            <input type="text" name="Msrpname">
+                        </label>
+                    </p>
+                    <p>
+                        <label>
+                            <span>性别:</span>
+                            <input type="text" name="ErshouMsrp">
+                        </label>
+                    </p>
+                    <p>
+                        <span>年龄:</span>
+                        <input type="text" name="fileImages">
+                    </p>
+                    <p>
+                        <span>是否管理员:</span>
+                        <input type="text" name="fileImages">
+                    </p>
+                    <p style="text-align:center;">
+                        <input type="submit" value="修改" class="btnBox" name="btnName1" id="btnBox1">
+                        <input type="button" value="取消" class="btnBox" name="btnName2" id="btnBox2">
+                    </p>
+                </form>
+            </div>
+        </div>
+
+
 
 
         <!-- 底部 -->
@@ -122,3 +169,22 @@
 </body>
 
 </html>
+<script src="/jquery-1.12.4.min.js"></script>
+<script>
+    // 有开关就要判断
+    var flag = true;
+    $("a[id=xiuGaiName]").click(function () {
+        if (flag) {
+            $(".newPhoneBox").show();
+            flag = false;
+        } else {
+            $(".newPhoneBox").hide();
+            flag = true;
+        }
+    });
+    //取消点击
+    $("#btnBox2").click(function () {
+        $(".newPhoneBox").hide();
+        flag = true;
+    });
+</script>

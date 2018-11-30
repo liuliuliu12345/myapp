@@ -4,3 +4,23 @@
   text-align: center;
   margin-top: 100px;
 }
+
+#pName {
+  display: none;
+}
+
+#pNameOne {
+  display: none;
+}
+
+#btn1 {
+  display: inline-block;
+  width: 34px;
+  height: 24px;
+  color: white;
+  text-decoration: none;
+}
+
+#liUser {
+  display: none;
+}

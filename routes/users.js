@@ -4,7 +4,7 @@ var router = express.Router(); //ejs模块功能调用
 var multer = require('multer'); //图片上传功能
 var MongoClient = require('mongodb').MongoClient; //链接数据库
 var async = require("async"); //异步
-
+var ObjectId = require('mongodb').ObjectId; //获取mongodb 数据库的id
 var url = 'mongodb://127.0.0.1:27017';
 var upload = multer({ //存到本地的图片路径
   dest: 'C:/tmp'
@@ -69,6 +69,80 @@ router.get('/', function (req, res, next) {
         })
       } else {
         var totalPage = Math.ceil(totalSize / pageSize); //总页数
+        // console.log(isAdmin + "=================");
+        res.render('users', {
+          // 渲染到页面
+          list: results[1],
+          totalPage: totalPage,
+          pageSize: pageSize,
+          currentPage: page,
+        })
+      }
+    })
+  });
+
+});
+
+// 用户模糊搜索
+router.post('/search', function (req, res, next) {
+  // res.send('===============')
+  var page = parseInt(req.query.page) || 1; //前端传过来的页面，默认为第一页
+  var pageSize = parseInt(req.query.pageSize) || 5; //每页显示的条数
+  var totalSize = 0; //总条数得查询数据库得来
+  var search = req.body.iptText; //获取 页面搜索值
+  inputName = new RegExp(search); //nodejs转一下正则
+  var data = [];
+
+  // 将用户的列表从数据库里捞出来，，操作数据库 mongodb
+  // MongoClient 链接url地址，第二个参数是回调函数（client变量）
+  MongoClient.connect(url, {
+    useNewUrlParser: true
+  }, function (err, client) {
+    // 如果err存在，链接数据库失败
+    if (err) {
+      console.log('链接数据库失败', err);
+      res.render('error', {
+        message: '链接数据库失败',
+        error: err
+      });
+      // return就不再执行下去了
+      return;
+    }
+
+    // 链接成功，数据库的名字 得到的是一个数据库的对象
+    var db = client.db('station');
+    async.series([
+      function (cb) {
+        db.collection('user').find({
+          username: inputName
+        }).count(function (err, num) {
+          if (err) {
+            cb(err);
+          } else {
+            totalSize = num;
+            cb(null);
+          }
+        })
+      },
+      function (cb) {
+        db.collection('user').find({
+          username: inputName
+        }).limit(pageSize).skip(page * pageSize - pageSize).toArray(function (err, data) {
+          if (err) {
+            cb(err)
+          } else {
+            cb(null, data)
+          }
+        })
+      }
+    ], function (err, results) {
+      if (err) {
+        res.render('error', {
+          message: '错误',
+          error: err
+        })
+      } else {
+        var totalPage = Math.ceil(totalSize / pageSize); //总页数
         // console.log(totalPage);
         res.render('users', {
           // 渲染到页面
@@ -76,7 +150,6 @@ router.get('/', function (req, res, next) {
           totalPage: totalPage,
           pageSize: pageSize,
           currentPage: page
-
         })
       }
     })
@@ -108,7 +181,7 @@ router.get('/phone', function (req, res) {
       return;
     }
 
-    console.log(1);
+    // console.log(1);
     // 数据库的名字 得到的是一个数据库的对象
     var db = client.db('station');
     async.series([
@@ -139,13 +212,14 @@ router.get('/phone', function (req, res) {
         })
       } else {
         var totalPage = Math.ceil(totalSize / pageSize); //总页数
-
         res.render('phone', {
           // 渲染到页面
           list: results[1],
           totalPage: totalPage,
           pageSize: pageSize,
-          currentPage: page
+          currentPage: page,
+          // isAdmin: data[0].isAdmin, //获取cookie里面的数据
+          // nickname: data[0].nickname
 
         })
 
@@ -336,7 +410,13 @@ router.post('/addBrand', upload.single('drandLogo'), function (req, res) {
 
 })
 
-
+// 退出删除cookie
+router.get('/clearCookie', function (req, res, next) {
+  // res.send('==================')
+  res.clearCookie('nickname');
+  res.clearCookie('isAdmin');
+  res.redirect('/dengLu.html'); //页面跳转
+})
 
 
 
@@ -399,16 +479,17 @@ router.post('/dengLu', function (req, res) {
         res.cookie('nickname', data[0].nickname, { //data得到的是数组
           maxAge: 60 * 60 * 1000
         });
-        // if (!data[0].nickname) {
-        //   //请登录
-        // } else {
-        //   res.send('你好' + data[0].nickname + ',欢迎您');
-        // }
-        // res.localStorage('nickname', data[0].nickname);
+        res.cookie('isAdmin', data[0].isAdmin, { //管理员存到cookie
+          maxAge: 60 * 60 * 1000
+        });
+        // res.render('index', {
+        //   isAdmin: data[0].isAdmin, //获取cookie里面的数据
+        //   nickname: data[0].nickname
+        // })
 
 
         //刷新页面
-        res.redirect('/');
+        res.redirect('/')
       }
       //最后结束请求
       client.close();
@@ -416,6 +497,7 @@ router.post('/dengLu', function (req, res) {
   })
   // res.send(' ');注意这里，因为 mongodb 的操作时异步操作
 });
+
 
 // 注册操作后台验证 localhost:3000/users/register
 router.post('/zhuCe', function (req, res) {
@@ -492,7 +574,7 @@ router.post('/zhuCe', function (req, res) {
   });
 });
 
-//在页面删除用户操作 
+//用户操作删除 
 router.get('/delete', function (req, res) {
   var id = req.query.id;
 
