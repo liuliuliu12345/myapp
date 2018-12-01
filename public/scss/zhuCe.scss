@@ -24,13 +24,13 @@ html {
         bottom: 0;
         left: 0;
         margin: auto;
-        transition: all 2s; //这个盒子就有动画了
+        // transition: all 2s; //这个盒子就有动画了
 
-        &:hover {
-            transform: translateY(-20px);
-            background: #ccc;
-            box-shadow: -5px -5px 30px 10px lightblue, 5px 5px 30px 10px lightblue;
-        }
+        // &:hover {
+        //     transform: translateY(-20px);
+        //     background: #ccc;
+        //     box-shadow: -5px -5px 30px 10px lightblue, 5px 5px 30px 10px lightblue;
+        // }
 
 
         h2 {

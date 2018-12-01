@@ -48,14 +48,15 @@
                                 <!-- iconfont的图标文件写在 reset公共文件 -->
                                 <!-- <td><i class="iconfont">&#xe678;</i></td> -->
                                 <td><img src="/<%= list[i].drandLogo %>" alt="" style="width:50px;"></td>
-                                <td>
+                                <td id="name">
                                     <!-- 数据库的 drandname -->
                                     <%= list[i].drandname %>
                                 </td>
                                 <td>
-                                    <span> <a href="#">修改</a></span>
-                                    <span> <a href="/users/deletebrand?id=<%= list[i]._id %>" style="color: red;">删除</a>
-                                    </span>
+                                    <span id="spanBrandXiu" abcd="<%=list[i].drandname %>" class="<%= list[i]._id%>"
+                                        style="cursor:pointer">
+                                        修改</span>
+                                    <span><a href="/users/deletebrand?id=<%= list[i]._id %>" style="color: red;">删除</a></span>
                                 </td>
                             </tr>
                             <% } %>
@@ -117,6 +118,40 @@
                     </div>
 
                 </div>
+
+                <!-- 品牌信息修改 -->
+                <div class="xiuBrandBox" id="xiuBrandBox">
+                    <div class="newH2box">
+                        <h2>品牌信息修改</h2>
+                    </div>
+                    <div class="newInputBox">
+                        <form action="/users/xiuBrand" method="POST" enctype="multipart/form-data">
+
+                            <p>
+                                <label>
+                                    <span>品牌ID:</span>
+                                    <input type="text" name="brandName1" id="brandPhone">
+                                </label>
+                            </p>
+                            <p>
+                                <label>
+                                    <span>品牌名称:</span>
+                                    <input type="text" name="brandName2" id="brandPhone1">
+                                </label>
+                            </p>
+                            <p>
+                                <span>图片:</span>
+                                <input type="file" class="file" name="drandLogo">
+                            </p>
+                            <p style="text-align:center;">
+                                <input type="submit" value="修改" class="btnBox" name="btnName1">
+                                <input type="button" value="取消" class="btnBox" name="btnName2" id="brandBtnBox2">
+                            </p>
+                        </form>
+                    </div>
+
+                </div>
+
             </div>
 
         </div>
@@ -144,6 +179,26 @@
     //取消点击
     $("#btnBox2").click(function () {
         $("#newBrandBox").hide();
+        flag = true;
+    });
+
+    // 品牌修改开关
+    $("span[id=spanBrandXiu]").click(function () {
+        if (flag) {
+            $("#xiuBrandBox").show();
+            $("#brandPhone").val($(this).prop('className'));
+            $("#brandPhone1").val($(this).attr('abcd')); //获取到目标的值
+
+            // console.log(($(this).attr('abcd')));
+            flag = false;
+        } else {
+            $("#xiuBrandBox").hide();
+            flag = true;
+        }
+    });
+    //取消点击
+    $("#brandBtnBox2").click(function () {
+        $("#xiuBrandBox").hide();
         flag = true;
     });
 </script>

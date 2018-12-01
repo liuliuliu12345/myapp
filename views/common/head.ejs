@@ -45,16 +45,17 @@
     getCookieOne('isAdmin');
 
 
+    //判断是否管理员
     if (getCookieOne('isAdmin') == 'true') {
         $("#pName").show();
-        pName.innerHTML = '欢迎' + getCookie('nickname') + '(管理员)';
-
-
+        pName.innerHTML = '欢迎您' + decodeURI(getCookie('nickname')) + '(管理员)'; //decodeURI将中文字符进行解码操作
     } else {
         $("#pName").show();
-        pName.innerHTML = '欢迎您' + getCookie('nickname') + '(游客)'; //=号是js
+        pName.innerHTML = '欢迎您<' + decodeURI(getCookie('nickname')) + '>(游客)'; //=号是js
 
     }
+
+
     // 如果cookie nickname ==空
     if (getCookie('nickname') == "") {
         $("#pName").hide();

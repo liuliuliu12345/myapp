@@ -7,14 +7,14 @@ var async = require("async"); //异步
 var ObjectId = require('mongodb').ObjectId; //获取mongodb 数据库的id
 var url = 'mongodb://127.0.0.1:27017';
 var upload = multer({ //存到本地的图片路径
-  dest: 'C:/tmp'
+  dest: 'F:/tmp'
 });
 var fs = require('fs'); //提供了一些使用函数，用于处理url与解析。
 var path = require('path'); //处理文件与目录的路径
 
 
 
-
+// =========================信息增加，用户管理==================
 // 用户管理,信息分页
 router.get('/', function (req, res, next) {
   var page = parseInt(req.query.page) || 1; //前端传过来的页面，默认为第一页
@@ -22,7 +22,7 @@ router.get('/', function (req, res, next) {
   var totalSize = 0; //总条数得查询数据库得来
   var data = [];
 
-  // 将用户的列表从数据库里捞出来，，操作数据库 mongodb
+  // 将用户的数据从数据库里捞出来，，操作数据库 mongodb
   // MongoClient 链接url地址，第二个参数是回调函数（client变量）
   MongoClient.connect(url, {
     useNewUrlParser: true
@@ -229,47 +229,6 @@ router.get('/phone', function (req, res) {
 
 });
 
-// 手机增加
-router.post('/addPhone', upload.single('fileImages'), function (req, res) {
-  // res.send(req.body)
-  // 如果想要通过浏览器访问到这张图片的话，是不是需要将图片放到 public里面img去
-  var filename = 'images/' + new Date().getTime() + '_' + req.file.originalname;
-  var newFileName = path.resolve(__dirname, '../public/', filename); //public文件夹下面的 filename
-  try {
-    // fs.renameSync(req.file.path, newFileName);
-    var data = fs.readFileSync(req.file.path);
-    fs.writeFileSync(newFileName, data);
-
-    // console.log(req.body);
-    // res.send('上传成功');
-    // 操作数据库写入
-    MongoClient.connect(url, {
-      useNewUrlParser: true
-    }, function (err, client) {
-
-      var db = client.db('station');
-      db.collection('phone').insertOne({
-        //数据库商品名：接收要增加商品的名
-        phonename: req.body.phoneName,
-        Fendername: req.body.Fendername,
-        Msrpname: req.body.Msrpname,
-        ErshouMsrp: req.body.ErshouMsrp,
-        images: filename
-      }, function (err) {
-        res.redirect('/phone.html');
-      })
-
-    })
-
-  } catch (error) {
-    res.render('error', {
-      message: '新增手机失败',
-      error: error
-    })
-  }
-
-})
-
 // 品牌管理,品牌到数据库渲染数据
 router.get('/brand', function (req, res) {
   var page = parseInt(req.query.page) || 1; //前端传过来的页面，默认为第一页
@@ -410,17 +369,52 @@ router.post('/addBrand', upload.single('drandLogo'), function (req, res) {
 
 })
 
-// 退出删除cookie
-router.get('/clearCookie', function (req, res, next) {
-  // res.send('==================')
-  res.clearCookie('nickname');
-  res.clearCookie('isAdmin');
-  res.redirect('/dengLu.html'); //页面跳转
+// 手机增加
+router.post('/addPhone', upload.single('fileImages'), function (req, res) {
+  // res.send(req.body)
+  // 如果想要通过浏览器访问到这张图片的话，是不是需要将图片放到 public里面img去
+  var filename = 'images/' + new Date().getTime() + '_' + req.file.originalname;
+  var newFileName = path.resolve(__dirname, '../public/', filename); //public文件夹下面的 filename
+  try {
+    // fs.renameSync(req.file.path, newFileName);
+    var data = fs.readFileSync(req.file.path);
+    fs.writeFileSync(newFileName, data);
+
+    // console.log(req.body);
+    // res.send('上传成功');
+    // 操作数据库写入
+    MongoClient.connect(url, {
+      useNewUrlParser: true
+    }, function (err, client) {
+
+      var db = client.db('station');
+      db.collection('phone').insertOne({
+        //数据库商品名：接收要增加商品的名
+        phonename: req.body.phoneName,
+        Fendername: req.body.Fendername,
+        Msrpname: req.body.Msrpname,
+        ErshouMsrp: req.body.ErshouMsrp,
+        images: filename
+      }, function (err) {
+        res.redirect('/phone.html');
+      })
+
+    })
+
+  } catch (error) {
+    res.render('error', {
+      message: '新增手机失败',
+      error: error
+    })
+  }
+
 })
 
 
 
-// 登录页面传过来的参数
+// =========================登录，注册============================
+
+// 登录页面传到index的参数
 router.post('/dengLu', function (req, res) {
   // 1. 获取前端传递过来的参数 console.log(req.body);登录获取到的用户名
   var username = req.body.useName;
@@ -574,6 +568,8 @@ router.post('/zhuCe', function (req, res) {
   });
 });
 
+
+//============================删除操作===========================
 //用户操作删除 
 router.get('/delete', function (req, res) {
   var id = req.query.id;
@@ -672,6 +668,152 @@ router.get('/deletebrand', function (req, res) {
     })
   })
 });
+
+// 退出删除cookie
+router.get('/clearCookie', function (req, res, next) {
+  // res.send('==================')
+  res.clearCookie('nickname');
+  res.clearCookie('isAdmin');
+  res.redirect('/dengLu.html'); //页面跳转
+})
+
+
+// =========================修改操作==============================
+// 品牌信息修改
+router.post("/xiuBrand", upload.single('drandLogo'), function (req, res) {
+  // res.send('========================================')
+  // upload.single('drandLogo')上传图片的
+  // 如果想要通过浏览器访问到这张图片的话，是不是需要将图片放到 public里面img去
+  var filename = 'images/' + new Date().getTime() + '_' + req.file.originalname;
+  var newFileName = path.resolve(__dirname, '../public/', filename); //public文件夹下面的 filename
+  try {
+    // fs.renameSync(req.file.path, newFileName);
+    var data = fs.readFileSync(req.file.path);
+    fs.writeFileSync(newFileName, data);
+
+    // console.log(req.body);
+    // res.send('上传成功');
+    // 操作数据库写入
+    MongoClient.connect(url, {
+      useNewUrlParser: true
+    }, function (err, client) {
+
+      var db = client.db('station');
+      db.collection('drandname').update({
+        _id: ObjectId(req.body.brandName1)
+      }, {
+        $set: {
+          drandLogo: filename,
+          drandname: req.body.brandName2
+        }
+      }, function (err) {
+        // 修改成功跳转
+        // res.send('=====================================')
+        res.redirect('/brand.html');
+      })
+
+    })
+
+  } catch (error) {
+    res.render('error', {
+      message: '品牌信息修改失败',
+      error: error
+    })
+  }
+
+});
+
+// 用户信息修改
+router.post("/userAlter", function (req, res) {
+  // res.send('========================================')
+  try {
+    // // fs.renameSync(req.file.path, newFileName);
+    // var data = fs.readFileSync(req.file.path);
+    // fs.writeFileSync(newFileName, data);
+
+    // console.log(req.body);
+    // res.send('上传成功');
+    // 操作数据库写入
+    MongoClient.connect(url, {
+      useNewUrlParser: true
+    }, function (err, client) {
+
+      var db = client.db('station');
+      db.collection('user').update({ //集合，数据库表
+        _id: ObjectId(req.body.phoneName) //id
+      }, {
+        $set: {
+          username: req.body.userName1, //用户名
+          nickname: req.body.userName2, //昵称
+          phonename: req.body.Msrpname, //手机号码
+          sex: req.body.ErshouMsrp, //性别
+          age: req.body.ageName, //年龄
+          isAdmin: req.body.isAdmin
+        }
+      }, function (err) {
+        // 修改成功跳转
+        // res.send('=====================================')
+        res.redirect('/users');
+      })
+
+    })
+
+  } catch (error) {
+    res.render('error', {
+      message: '修改信息失败',
+      error: error
+    })
+  }
+
+});
+
+// 手机信息修改
+router.post("/xiuPhone", upload.single('phoneImages'), function (req, res) {
+  // res.send('========================================')
+  // upload.single('drandLogo')上传图片的
+  // 如果想要通过浏览器访问到这张图片的话，是不是需要将图片放到 public里面img去
+  var filename = 'images/' + new Date().getTime() + '_' + req.file.originalname;
+  var newFileName = path.resolve(__dirname, '../public/', filename); //public文件夹下面的 filename
+  try {
+    // fs.renameSync(req.file.path, newFileName);
+    var data = fs.readFileSync(req.file.path);
+    fs.writeFileSync(newFileName, data);
+
+    // console.log(req.body);
+    // res.send('上传成功');
+    // 操作数据库写入
+    MongoClient.connect(url, {
+      useNewUrlParser: true
+    }, function (err, client) {
+
+      var db = client.db('station');
+      db.collection('phone').update({ //phone数据表
+        _id: ObjectId(req.body.phoneNameID)
+      }, {
+        $set: {
+          phonename: req.body.phoneName, //名称
+          Fendername: req.body.FenderName, //所属品牌
+          Msrpname: req.body.Msrpname, //官方指导
+          ErshouMsrp: req.body.ErshouMsrp, //二手回收价
+          images: filename
+        }
+      }, function (err) {
+        // 修改成功跳转
+        // res.send('=====================================')
+        res.redirect('phone');
+      })
+
+    })
+
+  } catch (error) {
+    res.render('error', {
+      message: '修改手信息机失败',
+      error: error
+    })
+  }
+
+});
+
 
 
 

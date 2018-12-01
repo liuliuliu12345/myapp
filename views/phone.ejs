@@ -65,7 +65,7 @@
                                     <%= list[i].ErshouMsrp %>
                                 </td>
                                 <td>
-                                    <span><a href="#">修改</a></span>|
+                                    <span id="spanXiuGai" class="<%= list[i]._id %>"><a href="#">修改</a></span>|
                                     <span> <a href="/users/deletePhone?id=<%= list[i]._id %>" style="color: red;">删除</a></span>
                                 </td>
                             </tr>
@@ -148,6 +148,57 @@
                     </div>
                 </div>
 
+                <!-- 修改手机信息 -->
+                <div class="xiuGaiPhoneBox">
+                    <div class="newH2box">
+                        <h2>修改手机信息</h2>
+                    </div>
+                    <div class="newInputBox">
+                        <form action="/users/xiuPhone" method="POST" enctype="multipart/form-data">
+                            <p>
+                                <label>
+                                    <span>名称ID:</span>
+                                    <input type="text" name="phoneNameID" id="phoneNameID">
+                                </label>
+                            </p>
+                            <p>
+                                <label>
+                                    <span>手机名称:</span>
+                                    <input type="text" name="phoneName">
+                                </label>
+                            </p>
+                            <p>
+                                <label>
+                                    <span>所属品牌:</span>
+                                    <input type="text" name="FenderName">
+                                </label>
+                            </p>
+                            <p>
+                                <label>
+                                    <span>官方指导价:</span>
+                                    <input type="text" name="Msrpname">
+                                </label>
+                            </p>
+                            <p>
+                                <label>
+                                    <span>二手回收价:</span>
+                                    <input type="text" name="ErshouMsrp">
+                                </label>
+                            </p>
+                            <p>
+                                <span>图片:</span>
+                                <input type="file" class="file" name="phoneImages">
+                            </p>
+                            <p style="text-align:center;">
+                                <input type="submit" value="确认" class="btnBox" name="btnName1" id="btnBox1">
+                                <input type="button" value="取消" class="btnBox" name="btnName2" id="btnBoxXiu2">
+                            </p>
+                        </form>
+                    </div>
+                </div>
+
+
+
             </div>
 
         </div>
@@ -159,7 +210,7 @@
 </html>
 <script src="/jquery-1.12.4.min.js"></script>
 <script>
-    // 有开关就要判断
+    // 添加手机开关  就要判断
     var flag = true;
     $(".btnPhone").click(function () {
         if (flag) {
@@ -173,6 +224,23 @@
     //取消点击
     $("#btnBox2").click(function () {
         $(".newPhoneBox").hide();
+        flag = true;
+    });
+
+    // 修改手机
+    $("span[id=spanXiuGai]").click(function () {
+        if (flag) {
+            $(".xiuGaiPhoneBox").show();
+            $("#phoneNameID").val($(this).prop('className'))
+            flag = false;
+        } else {
+            $(".xiuGaiPhoneBox").hide();
+            flag = true;
+        }
+    });
+    //取消点击
+    $("#btnBoxXiu2").click(function () {
+        $(".xiuGaiPhoneBox").hide();
         flag = true;
     });
 </script>

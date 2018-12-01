@@ -74,9 +74,10 @@
                                 </td>
                                 <td>
                                     <% if(list[i].nickname){ %>
-                                    <span><a href="#" id="xiuGaiName">修改</a></span>
-                                    <% } %>
+                                    <span class="<%= list[i]._id%>" id="xiuGaiName" style="cursor:pointer">修改</span>
+
                                     <span><a href="/users/delete?id=<%= list[i]._id %>">删除</a></span>
+                                    <% } %>
                                 </td>
                             </tr>
                             <%}%>
@@ -115,20 +116,26 @@
         <!-- 修改 -->
         <div class="newPhoneBox">
             <div class="newH2box">
-                <h2>信息修改</h2>
+                <h2>用户信息修改</h2>
             </div>
             <div class="newInputBox">
-                <form action="/users/addPhone" method="POST" enctype="multipart/form-data">
+                <form action="/users/userAlter" method="POST" enctype="multipart/form-data">
+                    <p>
+                        <label>
+                            <span>用户Id名:</span>
+                            <input type="text" name="phoneName" id="userPhone">
+                        </label>
+                    </p>
                     <p>
                         <label>
                             <span>用户名:</span>
-                            <input type="text" name="phoneName">
+                            <input type="text" name="userName1" id="userPhone1">
                         </label>
                     </p>
                     <p>
                         <label>
                             <span>用户昵称:</span>
-                            <input type="text" name="phoneName">
+                            <input type="text" name="userName2">
 
                         </label>
                     </p>
@@ -146,11 +153,11 @@
                     </p>
                     <p>
                         <span>年龄:</span>
-                        <input type="text" name="fileImages">
+                        <input type="text" name="ageName">
                     </p>
                     <p>
                         <span>是否管理员:</span>
-                        <input type="text" name="fileImages">
+                        <input type="text" name="isAdmin">
                     </p>
                     <p style="text-align:center;">
                         <input type="submit" value="修改" class="btnBox" name="btnName1" id="btnBox1">
@@ -173,9 +180,10 @@
 <script>
     // 有开关就要判断
     var flag = true;
-    $("a[id=xiuGaiName]").click(function () {
+    $("span[id=xiuGaiName]").click(function () {
         if (flag) {
             $(".newPhoneBox").show();
+            $("#userPhone").val($(this).prop('className'));
             flag = false;
         } else {
             $(".newPhoneBox").hide();
